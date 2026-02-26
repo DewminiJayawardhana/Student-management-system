@@ -10,7 +10,7 @@ import StudentListPage from "./pages/admin/StudentListPage";
 import TeacherListPage from "./pages/admin/TeacherListPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GradeStudentsPage from "./pages/admin/GradeStudentsPage";
-
+import RegisterTeacherPage from "./pages/teacher/RegisterTeacherPage";
 export default function App() {
   return (
     <BrowserRouter>
@@ -49,7 +49,7 @@ export default function App() {
           }
         />
        
-
+<Route path="/register-teacher" element={<RegisterTeacherPage />} />
         {/* Students */}
         <Route
           path="/admin/students"

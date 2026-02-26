@@ -21,6 +21,10 @@ public class Teacher {
 
     private String telNumber;    // phone number
 
+    // ✅ pre-approval link fields
+    private boolean registered = false;   // default false
+    private String teacherUserId;         // linked auth user id (optional)
+
     public Teacher() {}
 
     public Teacher(String id, String name, String subjects, String username, String email, String telNumber) {
@@ -49,4 +53,11 @@ public class Teacher {
 
     public String getTelNumber() { return telNumber; }
     public void setTelNumber(String telNumber) { this.telNumber = telNumber; }
+
+    // ✅ NEW getters/setters (IMPORTANT)
+    public boolean isRegistered() { return registered; }
+    public void setRegistered(boolean registered) { this.registered = registered; }
+
+    public String getTeacherUserId() { return teacherUserId; }
+    public void setTeacherUserId(String teacherUserId) { this.teacherUserId = teacherUserId; }
 }
