@@ -41,6 +41,15 @@ export default function StudentAccountPage() {
     navigate(`/student/staff/grade/${g}/term/${term}`);
   };
 
+  // ✅ LOGOUT FUNCTION (NEW)
+  const handleLogout = () => {
+    localStorage.removeItem("studentLoggedIn");
+    localStorage.removeItem("studentId");
+    localStorage.removeItem("studentUsername");
+    localStorage.removeItem("role");
+    navigate("/login");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
@@ -61,6 +70,14 @@ export default function StudentAccountPage() {
               </div>
             )}
           </div>
+
+          {/* ✅ LOGOUT BUTTON (NEW) */}
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition"
+          >
+            Logout
+          </button>
         </div>
 
         {/* Grade Tabs */}
@@ -87,7 +104,9 @@ export default function StudentAccountPage() {
 
         {/* Term Buttons */}
         <div className="mt-6 bg-white rounded-2xl shadow p-5">
-          <h3 className="text-lg font-bold text-gray-800">Grade {activeGrade} Terms</h3>
+          <h3 className="text-lg font-bold text-gray-800">
+            Grade {activeGrade} Terms
+          </h3>
           <p className="text-gray-500 text-sm mt-1">
             Select your class-term to view your marks (read-only)
           </p>
@@ -111,7 +130,9 @@ export default function StudentAccountPage() {
                 return (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="border rounded-2xl p-4 bg-gray-50">
-                      <p className="font-semibold text-gray-800 mb-3">Group {room}</p>
+                      <p className="font-semibold text-gray-800 mb-3">
+                        Group {room}
+                      </p>
 
                       <div className="grid grid-cols-1 gap-2">
                         {items.map((term) => (

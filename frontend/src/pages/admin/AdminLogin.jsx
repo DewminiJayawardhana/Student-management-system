@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FiUser, FiLock, FiLogIn } from "react-icons/fi";
 import { api } from "../../api/axios";
-import { FiUserPlus, FiBookOpen } from "react-icons/fi";
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("");
@@ -43,24 +42,22 @@ export default function AdminLogin() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
 
-        {/* ===== Title ===== */}
+        {/* Title */}
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold text-gray-800">
-            School Login
+            Staff Login
           </h2>
           <p className="text-gray-500 mt-1">
-           Welcome!
+            Admin & Teacher access
           </p>
         </div>
 
-        {/* Flash message */}
         {flash && (
           <p className="text-green-600 text-sm text-center mb-3">
             {flash}
           </p>
         )}
 
-        {/* ===== Form ===== */}
         <form onSubmit={handleLogin} className="space-y-4">
 
           {/* Username */}
@@ -103,50 +100,23 @@ export default function AdminLogin() {
             <p className="text-red-600 text-sm text-center">{error}</p>
           )}
 
-          {/* Login Button */}
           <button
             type="submit"
             className="w-full flex items-center justify-center gap-2 bg-red-600 text-white py-2.5 rounded-xl font-semibold hover:bg-red-700 transition"
           >
             <FiLogIn />
-            Staff Login
+            Login
           </button>
         </form>
 
-        {/* ===== Footer ===== */}
-       <div className="mt-6 space-y-4">
-        <Link
-  to="/student-login"
-  className="w-full flex items-center justify-center gap-2
-    border border-blue-500 text-blue-700
-    py-2.5 rounded-xl font-semibold
-    hover:bg-blue-50 transition"
->
-  Student Login
-</Link>
-         <Link
-  to="/register-student"
-  className=" w-full flex items-center justify-center gap-2
-      border border-green-500 text-green-700
-      py-2.5 rounded-xl font-semibold
-      hover:bg-green-50 transition"
->
-   <FiUserPlus />
-  Register as Student
-</Link>
-            
-          <Link
-            to="/register-teacher"
-            className="w-full flex items-center justify-center gap-2
-      border border-indigo-500 text-indigo-700
-      py-2.5 rounded-xl font-semibold
-      hover:bg-indigo-50 transition"
-          >
-             <FiBookOpen />
-            Register as Teacher
-          </Link>
-
-        </div>
+        {/* Back Button */}
+        <button
+          onClick={() => navigate("/login")}
+          className="mt-5 w-full py-2.5 rounded-xl font-semibold border bg-white hover:bg-gray-100 transition"
+          type="button"
+        >
+          ⬅ Back
+        </button>
 
       </div>
     </div>

@@ -17,12 +17,17 @@ import StudentLoginPage from "./pages/student/StudentLoginPage";
 import StudentAccountPage from "./pages/student/StudentAccountPage";
 import StudentStaffViewPage from "./pages/student/StudentStaffViewPage";
 
+import LoginSelectionPage from "./pages/common/LoginSelectionPage";
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Login */}
-        <Route path="/login" element={<AdminLogin />} />
+        {/* Selection page */}
+        <Route path="/login" element={<LoginSelectionPage />} />
+
+        {/* Staff login form (admin + teacher) */}
+        <Route path="/staff-login" element={<AdminLogin />} />
 
         {/* Redirect root */}
         <Route path="/" element={<Navigate to="/login" replace />} />
@@ -37,7 +42,7 @@ export default function App() {
           }
         />
 
-        {/* ✅ Staff routes (NEW) */}
+        {/* Staff routes */}
         <Route
           path="/admin/staff"
           element={
@@ -54,8 +59,15 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-       
-<Route path="/register-teacher" element={<RegisterTeacherPage />} />
+        <Route
+          path="/admin/staff/grade/:grade/:term"
+          element={
+            <ProtectedRoute>
+              <StaffTermPage />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Students */}
         <Route
           path="/admin/students"
@@ -73,36 +85,33 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* Student auth */}
+        <Route path="/student-login" element={<StudentLoginPage />} />
+        <Route path="/register-student" element={<RegisterStudentPage />} />
+
         <Route
-  path="/admin/staff/grade/:grade/:term"
-  element={
-    <ProtectedRoute>
-      <StaffTermPage />
-    </ProtectedRoute>
-  }
-/>
-<Route path="/student-login" element={<StudentLoginPage />} />
+          path="/student/account"
+          element={
+            <ProtectedRoute allowRoles={["STUDENT"]}>
+              <StudentAccountPage />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-  path="/student/account"
-  element={
-    <ProtectedRoute allowRoles={["STUDENT"]}>
-      <StudentAccountPage />
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="/student/staff/grade/:grade/term/:term"
+          element={
+            <ProtectedRoute allowRoles={["STUDENT"]}>
+              <StudentStaffViewPage />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-  path="/student/staff/grade/:grade/term/:term"
-  element={
-    <ProtectedRoute allowRoles={["STUDENT"]}>
-      <StudentStaffViewPage />
-    </ProtectedRoute>
-  }
-/>
-<Route path="/register-student" element={<RegisterStudentPage />} />
+        {/* Teacher register */}
+        <Route path="/register-teacher" element={<RegisterTeacherPage />} />
 
-        {/* Teachers */}
+        {/* Teachers list */}
         <Route
           path="/admin/teachers"
           element={
