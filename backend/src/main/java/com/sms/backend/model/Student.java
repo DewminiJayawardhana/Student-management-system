@@ -1,45 +1,56 @@
 package com.sms.backend.model;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.Instant;
 
-@Document("students")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Document(collection = "students")
 public class Student {
 
     @Id
     private String id;
 
+    private String name;
+
     @Indexed(unique = true)
-    private String studentCode; // STU-2026-0001
+    private String username; // unique
 
-    @NotBlank
-    private String fullName;
+    private int grade;       // 1 - 13
+    private String classRoom; // "A", "B", "C"
 
-    @Email
-    @NotBlank
-    @Indexed(unique = true)
-    private String email;
+    private boolean registered = false; // ✅ default false
 
-    @NotBlank
-    private String phone;
+    private String studentUserId;   // linked auth user id
 
-    private String address;
+    public Student() {}
 
-    @NotBlank
-    private String grade;
+    public Student(String id, String name, String username, int grade, String classRoom) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.grade = grade;
+        this.classRoom = classRoom;
+    }
 
-    private boolean active = true;
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    private Instant createdAt;
-    private Instant updatedAt;
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
+    public int getGrade() { return grade; }
+    public void setGrade(int grade) { this.grade = grade; }
+
+    public String getClassRoom() { return classRoom; }
+    public void setClassRoom(String classRoom) { this.classRoom = classRoom; }
+
+    public boolean isRegistered() { return registered; }
+    public void setRegistered(boolean registered) { this.registered = registered; }
+
+public String getStudentUserId() { return studentUserId; }
+public void setStudentUserId(String studentUserId) { this.studentUserId = studentUserId; }
 }

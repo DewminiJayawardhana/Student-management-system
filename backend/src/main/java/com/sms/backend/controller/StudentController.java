@@ -2,47 +2,51 @@ package com.sms.backend.controller;
 
 import com.sms.backend.model.Student;
 import com.sms.backend.service.StudentService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/students")
-@RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000") // React
 public class StudentController {
 
-    private final StudentService studentService;
+    private final StudentService service;
 
-    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
-    @PostMapping
-    public Student create(@Valid @RequestBody Student student) {
-        return studentService.create(student);
+    public StudentController(StudentService service) {
+        this.service = service;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    // GET /api/students?grade=1
     @GetMapping
-    public List<Student> getAll() {
-        return studentService.getAll();
+    public ResponseEntity<List<Student>> getByGrade(@RequestParam int grade) {
+        return ResponseEntity.ok(service.getByGrade(grade));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
-    @GetMapping("/{id}")
-    public Student getById(@PathVariable String id) {
-        return studentService.getById(id);
+    // POST /api/students
+    @PostMapping
+    public ResponseEntity<Student> add(@RequestBody Student student) {
+        return ResponseEntity.ok(service.addStudent(student));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    // PUT /api/students/{id}
     @PutMapping("/{id}")
-    public Student update(@PathVariable String id, @Valid @RequestBody Student student) {
-        return studentService.update(id, student);
+    public ResponseEntity<Student> update(@PathVariable String id, @RequestBody Student student) {
+        return ResponseEntity.ok(service.updateStudent(id, student));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    // DELETE /api/students/{id}
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
-        studentService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        service.deleteStudent(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // POST /api/students/promote
+    @PostMapping("/promote")
+    public ResponseEntity<String> promoteAll() {
+        service.promoteAll();
+        return ResponseEntity.ok("Promoted successfully");
     }
 }
