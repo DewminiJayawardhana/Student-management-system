@@ -1,6 +1,6 @@
-// src/pages/teacher/RegisterTeacherPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FiUser, FiMail, FiBook, FiLock } from "react-icons/fi";
 import { api } from "../../api/axios";
 
 export default function RegisterTeacherPage() {
@@ -15,104 +15,78 @@ export default function RegisterTeacherPage() {
   });
 
   const [err, setErr] = useState("");
-  const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
   const submit = async (e) => {
     e.preventDefault();
     setErr("");
-    setMsg("");
-
-    const payload = {
-      username: form.username.trim(),
-      name: form.name.trim(),
-      subject: form.subject.trim(),
-      email: form.email.trim(),
-      password: form.password,
-    };
-
-    if (!payload.username || !payload.name || !payload.subject || !payload.email || !payload.password) {
-      setErr("All fields are required.");
-      return;
-    }
 
     try {
       setLoading(true);
-      await api.post("/api/teacher-auth/register", payload);
-
-      // show success then redirect to login with flash message
-      setMsg("Registration successful. Please login.");
-      setTimeout(() => {
-        navigate("/login", { state: { flash: "Registration successful. Please login." } });
-      }, 700);
+      await api.post("/api/teacher-auth/register", form);
+      navigate("/login", {
+        state: { flash: "Teacher registration successful. Please login." },
+      });
     } catch (e2) {
-      const m = e2?.response?.data?.message || e2?.response?.data || "Registration failed.";
-      setErr(String(m));
+      setErr(e2?.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 flex items-center justify-center">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow p-6">
-        <h2 className="text-2xl font-bold text-gray-800">Teacher Registration</h2>
-        <p className="text-gray-600 mt-1 text-sm">
-          Your username must be pre-approved by admin.
-        </p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-100 p-4">
+      <div className="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md">
+        <div className="text-center mb-6">
+          <div className="mx-auto w-14 h-14 rounded-full bg-indigo-600 flex items-center justify-center text-white text-2xl">
+            👩‍🏫
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800 mt-3">
+            Teacher Registration
+          </h2>
+          <p className="text-gray-500 text-sm mt-1">
+            Username must be approved by admin
+          </p>
+        </div>
 
-        {err && <p className="text-red-600 text-sm mt-3">{err}</p>}
-        {msg && <p className="text-green-700 text-sm mt-3">{msg}</p>}
+        {err && <p className="text-red-600 text-sm text-center mb-3">{err}</p>}
 
-        <form onSubmit={submit} className="mt-4 space-y-3">
-          <input
-            className="w-full px-4 py-2 border rounded-xl"
-            placeholder="Username (must match admin list)"
-            value={form.username}
-            onChange={(e) => setForm((p) => ({ ...p, username: e.target.value }))}
-          />
-
-          <input
-            className="w-full px-4 py-2 border rounded-xl"
-            placeholder="Name"
-            value={form.name}
-            onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-          />
-
-          <input
-            className="w-full px-4 py-2 border rounded-xl"
-            placeholder="Subject"
-            value={form.subject}
-            onChange={(e) => setForm((p) => ({ ...p, subject: e.target.value }))}
-          />
-
-          <input
-            className="w-full px-4 py-2 border rounded-xl"
-            placeholder="Email"
-            type="email"
-            value={form.email}
-            onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-          />
-
-          <input
-            className="w-full px-4 py-2 border rounded-xl"
-            placeholder="Password"
-            type="password"
-            value={form.password}
-            onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
-          />
+        <form onSubmit={submit} className="space-y-4">
+          {[
+            { key: "username", icon: <FiUser />, placeholder: "Teacher Username" },
+            { key: "name", icon: <FiUser />, placeholder: "Full Name" },
+            { key: "subject", icon: <FiBook />, placeholder: "Subject" },
+            { key: "email", icon: <FiMail />, placeholder: "Email" },
+            { key: "password", icon: <FiLock />, placeholder: "Password", type: "password" },
+          ].map((f) => (
+            <div key={f.key} className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                {f.icon}
+              </span>
+              <input
+                type={f.type || "text"}
+                placeholder={f.placeholder}
+                value={form[f.key]}
+                onChange={(e) =>
+                  setForm({ ...form, [f.key]: e.target.value })
+                }
+                className="w-full pl-11 pr-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-indigo-500"
+                required
+              />
+            </div>
+          ))}
 
           <button
             disabled={loading}
-            className="w-full px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 disabled:opacity-60"
+            className="w-full bg-indigo-600 text-white py-2.5 rounded-xl font-semibold hover:bg-indigo-700 disabled:opacity-60"
           >
-            {loading ? "Registering..." : "Register"}
+            {loading ? "Registering..." : "Register as Teacher"}
           </button>
 
           <button
             type="button"
             onClick={() => navigate("/login")}
-            className="w-full px-4 py-2 rounded-xl border bg-white hover:bg-gray-100"
+            className="w-full border py-2 rounded-xl hover:bg-gray-50"
           >
             Back to Login
           </button>

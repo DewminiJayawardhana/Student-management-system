@@ -11,6 +11,12 @@ import TeacherListPage from "./pages/admin/TeacherListPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GradeStudentsPage from "./pages/admin/GradeStudentsPage";
 import RegisterTeacherPage from "./pages/teacher/RegisterTeacherPage";
+import RegisterStudentPage from "./pages/student/RegisterStudentPage";
+
+import StudentLoginPage from "./pages/student/StudentLoginPage";
+import StudentAccountPage from "./pages/student/StudentAccountPage";
+import StudentStaffViewPage from "./pages/student/StudentStaffViewPage";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -75,6 +81,26 @@ export default function App() {
     </ProtectedRoute>
   }
 />
+<Route path="/student-login" element={<StudentLoginPage />} />
+
+<Route
+  path="/student/account"
+  element={
+    <ProtectedRoute allowRoles={["STUDENT"]}>
+      <StudentAccountPage />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/student/staff/grade/:grade/term/:term"
+  element={
+    <ProtectedRoute allowRoles={["STUDENT"]}>
+      <StudentStaffViewPage />
+    </ProtectedRoute>
+  }
+/>
+<Route path="/register-student" element={<RegisterStudentPage />} />
 
         {/* Teachers */}
         <Route

@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
 @Document(collection = "students")
 public class Student {
 
@@ -17,6 +18,10 @@ public class Student {
 
     private int grade;       // 1 - 13
     private String classRoom; // "A", "B", "C"
+
+    private boolean registered = false; // ✅ default false
+
+    private String studentUserId;   // linked auth user id
 
     public Student() {}
 
@@ -42,4 +47,10 @@ public class Student {
 
     public String getClassRoom() { return classRoom; }
     public void setClassRoom(String classRoom) { this.classRoom = classRoom; }
+
+    public boolean isRegistered() { return registered; }
+    public void setRegistered(boolean registered) { this.registered = registered; }
+
+public String getStudentUserId() { return studentUserId; }
+public void setStudentUserId(String studentUserId) { this.studentUserId = studentUserId; }
 }
